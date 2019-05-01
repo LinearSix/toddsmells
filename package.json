@@ -1,0 +1,29 @@
+{
+  "name": "toddsmells",
+  "version": "1.0.0",
+  "description": "## User Stories ### MVP * The user should be able to enter a phone number for receiving messages * The user should receive an animated GIF every day * The user should receive a trivia question every Monday * The user should receive the answer to the trivia question every Friday * The user should have the ability to opt-out of future messages. * The user should see links to relevent information/sites (Frinkiac, etc...)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LinearSix/toddsmells.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LinearSix/toddsmells/issues"
+  },
+  "homepage": "https://github.com/LinearSix/toddsmells#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "path": "^0.12.7",
+    "serve-favicon": "^2.5.0",
+    "twilio": "^3.30.2"
+  }
+}
