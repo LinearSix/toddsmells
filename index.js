@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 2020;
 require('dotenv').config()
 const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
+const schedule = require('node-schedule');
 
 // use body-parser middleware
 app.use(bodyParser.json());
@@ -30,23 +31,22 @@ const route_signup = require('./routes/signup');
 const accountSid = process.env.VAR_TWILIO_SID;
 const authToken = process.env.VAR_TWILIO_AUTH;
 const client = require('twilio')(accountSid, authToken);
+// const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
-let numbersToMessage = [process.env.VAR_TO];
+let numbersToMessage = ["+15126737109"];
 
-// send the messages!
-function sendMMS() {
-    numbersToMessage.forEach(function(number){
-        var message = client.messages.create({
-            body: 'Happy Monday from toddsmells.com!',
-            from: process.env.VAR_FROM,
-            mediaUrl: 'http://www.daviemurray.com/krusty_stupid_pet_tricks.gif',
-            to: number
-        })
-        .then(message =>  console.log(message.status))
-        .done();
-    });
-};
-setInterval(sendMMS, 5000);
+// let j = schedule.scheduleJob('0 0 9 * * *', function(){
+//     numbersToMessage.forEach(function(number){
+//         var message = client.messages.create({
+//             body: 'Happy Monday from toddsmells.com!',
+//             from: process.env.VAR_FROM,
+//             mediaUrl: 'http://www.daviemurray.com/bart_buzz.gif',
+//             to: number
+//         })
+//         .then(message =>  console.log(message.status))
+//         .done();
+//     });
+//   });
 
 // use express routes
 app.use(index);
@@ -75,5 +75,7 @@ res.sendStatus(500);
 app.listen(PORT, function() {
 console.log("listening on port: ", PORT);
 });
+
+// listen( 8080, 'APP_SERVER_PUBLIC_IP');
 
 module.exports = app;
