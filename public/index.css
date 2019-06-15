@@ -11,6 +11,7 @@ body, html {
     margin: 0;
     background-color: rgb(65, 64, 64);;
     font-family: "HelveticaNeue-CondensedBold";
+    overflow: hidden;
 }
 .div_main_container {
     width: 100%;
@@ -19,8 +20,21 @@ body, html {
     /* background: rgb(40, 40, 40); */
     /* border: solid 5px red; */
 }
+.div_red_banner {
+    width: 100%;
+    position: absolute;
+    top: 75px;
+    color: white;
+    background: red;
+    font-size: 40px;
+    text-align: center;
+    padding: 5px;
+    padding-left: 20px;
+    text-shadow: 0px 0px 3px black;
+    z-index: 1;
+}
 .div_gif_banner {
-    width: 75px;
+    width: 104px;
     height: 100%;
     position: absolute;
     top: 0;
@@ -28,15 +42,23 @@ body, html {
     color: white;
     background: black;
     padding: 5px;
-    z-index: 1;
+    z-index: 2;
+}
+.div_quad_container {
+    width: 610px;
+    height: 610px;
+    position: absolute;
+    top: 50px;
+    left: 75px;
+    /* background: rgb(179, 179, 179); */
 }
 .div_box_1 {
-    width: 13.5vw;
-    height: 18vw;
+    width: 225px;
+    height: 300px;
     text-align: center;
     position: absolute;
-    top: 6vh;
-    left: 40vw;
+    top: 0px;
+    left: 50px;
     color: white;
     background: rgb(255, 211, 136);
     padding: 5px;
@@ -49,12 +71,15 @@ body, html {
     line-height: 18vw;
     text-shadow: 0px 0px 3px black;
 }
+.div_box_1:hover {
+    box-shadow: 0 0 30px white;
+}
 .div_box_2 {
-    width: 18vw;
-    height: 13.5vw;
+    width: 300px;
+    height: 225px;
     position: absolute;
-    top: 12vh;
-    left: 54.5vw;
+    top: 50px;
+    right: 0px;
     color: rgb(136, 213, 255);
     background: rgb(255, 201, 136);
     padding: 5px;
@@ -66,11 +91,11 @@ body, html {
     background-size: cover;
 }
 .div_box_3 {
-    width: 18vw;
-    height: 13.5vw;
+    width: 300px;
+    height: 225px;
     position: absolute;
-    top: 46vh;
-    left: 37vw;
+    bottom: 50px;
+    left: 0px;
     color: rgb(136, 213, 255);
     background: rgb(136, 213, 255);
     padding: 5px;
@@ -82,12 +107,12 @@ body, html {
     background-size: cover;
 }
 .div_box_4 {
-    width: 13.5vw;
-    height: 18vw;
+    width: 225px;
+    height: 300px;
     text-align: center;
     position: absolute;
-    top: 42.7vh;
-    left: 56vw;
+    bottom: 0;
+    right: 50px;
     color: white;
     background: rgb(136, 255, 144);
     padding: 5px;
@@ -100,20 +125,13 @@ body, html {
     line-height: 18vw;
     text-shadow: 0px 0px 3px black;
 }
-.div_red_banner {
-    width: 100%;
-    position: absolute;
-    top: 75px;
-    color: white;
-    background: red;
-    font-size: 40px;
-    padding: 5px;
-    padding-left: 20px;
-    text-shadow: 0px 0px 3px black;
-    z-index: 2;
+.div_box_4:hover {
+    box-shadow: 0 0 30px white;
 }
 .img_gif_banner {
-    width: 96px;
+    /* width: 96px; */
+    display: block;
+    padding: 4px;
 }
 h1 {
     font-family: "HelveticaNeue-CondensedBold";

@@ -4,6 +4,7 @@ exports.up = function(knex) {
         table.date('gif_date');
         table.string('gif_name').notNullable().defaultTo('');
         table.string('gif_path').notNullable().defaultTo('');
+        table.text('gif_quote').notNullable().defaultTo('');
         table.text('gif_desc').notNullable().defaultTo('');
     })
 };
