@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'node_modules')))
 
 // set the favicon file
-app.use(favicon(path.join(__dirname,'public','favicon.ico')));
+// app.use(favicon(path.join(__dirname,'public','favicon.ico')));
 
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -69,57 +69,65 @@ let gifID = ``;
 let gifPath = ``;
 let gifDate = ``;
 let gifQuote = ``;
+let gifData;
 async function returnedGifs() {
     // here's the gif!
-    let gifData = await getGif();
+    gifData = await getGif();
     gifID = gifData[0].gif_id;
     gifPath = gifData[0].gif_path;
     gifDate = gifData[0].gif_date;
     gifQuote = gifData[0].gif_quote;
-    console.log(`gifID: ${gifID}`);
-    console.log(`gifPath: ${gifPath}`);
-    console.log(`gifDate: ${gifDate}`);
+    console.log(`returnedGifs gifID: ${gifID}`);
+    console.log(`returnedGifs gifPath: ${gifPath}`);
+    console.log(`returnedGifs gifDate: ${gifDate}`);
     // now go update null to the current date
-    await updateGifDate(gifID)
+    // await updateGifDate(gifID)
 };
 
 // set Twilio SID and Token
 const accountSid = process.env.VAR_TWILIO_SID;
 const authToken = process.env.VAR_TWILIO_AUTH;
 const client = require('twilio')(accountSid, authToken);
-// const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
-let numbersToMessage = ["+15126737109"];
+// let numbersToMessage = [+15126737109, +13474535584, +15127721379, +15202507540, +16126444087, +15129632405, +15125681055, +15125077431, +15126380872];
+let numbersToMessage = [+15126737109]
 
-// let j = schedule.scheduleJob('0 0 15 37 * *', function(){
-//     numbersToMessage.forEach(function(number){
-//         var message = client.messages.create({
-//             body: 'Successful test from database!',
-//             from: process.env.VAR_FROM,
-//             mediaUrl: `http://localhost:2020/gifs/${ gifPath }.gif`,
-//             to: number
-//         })
-//         .then(message =>  console.log(message.status))
-//         .done();
-//     });
-// });
-
-// this function is for testing and send a new gif every 5 seconds
-function sendMMS() {
-    returnedGifs();
+let j = schedule.scheduleJob('22 8 * * *', async function(){
+    await returnedGifs();
     numbersToMessage.forEach(function(number){
         var message = client.messages.create({
             body: gifQuote,
             from: process.env.VAR_FROM,
-            mediaUrl: `http://www.daviemurray.com/${ gifPath }.gif`,
+            mediaUrl: `http://148.72.42.20:8080/gifs/${ gifPath }`,
             to: number
         })
         .then(console.log(gifPath))
         .then(message =>  console.log(message.status))
         .done();
     });
-    console.log(`Current Gif Date: ${gifDate}`);
-};
+    updateGifDate(gifID)
+    console.log(`gifID: ${gifID}`);
+    console.log(`gifPath: ${gifPath}`);
+    console.log(`gifDate: ${gifDate}`);
+});
+
+// this function is for testing and send a new gif every 5 seconds
+// function sendMMS() {
+//     returnedGifs();
+//     numbersToMessage.forEach(function(number){
+//         var message = client.messages.create({
+//             body: gifQuote,
+//             from: process.env.VAR_FROM,
+//             mediaUrl: `http://148.72.42.20:8080/gifs/${ gifPath }`,
+//             to: number
+//         })
+//         .then(console.log(gifPath))
+//         .then(message =>  console.log(message.status))
+//         .done();
+//     // updateGifDate(gifID)
+//     });
+//     console.log(`Current Gif Date: ${gifDate}`);
+// };
 // comment the setInterval method out when not testing
 // setInterval(sendMMS, 5000);
 
