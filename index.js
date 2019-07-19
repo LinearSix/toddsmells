@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const app = express();
 const PORT = process.env.PORT || 8080;
 require('dotenv').config()
@@ -7,6 +8,8 @@ const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
 const knex = require('./db/knex');
 const schedule = require('node-schedule');
+
+app.use(fileUpload());
 
 // use body-parser middleware
 app.use(bodyParser.json());
@@ -28,6 +31,7 @@ app.set('view engine', 'ejs');
 const index = require('./routes');
 const route_signup = require('./routes/signup');
 const route_gif_admin = require('./routes/gif_admin');
+const route_dump = require('./routes/dump');
 
 // send gif to the sendMMS function
 function getGif() {
@@ -40,6 +44,22 @@ function getGif() {
             gifArr.push(value)
         });
         return gifArr;
+    });
+};
+
+// send numbers to the sendMMS function
+let numbersToMessage = [];
+function getNumbers() {
+    let numArr = [];
+    return knex('sign_up')
+    .then(function(sign_up) {
+        sign_up.forEach(function(value) {
+            numArr.push(value)
+        });
+        for (i=0; i<numArr.length; i++) {
+            numbersToMessage.push(numArr[i].sign_up_phone);
+        };
+        return numbersToMessage;
     });
 };
 
@@ -70,8 +90,15 @@ let gifPath = ``;
 let gifDate = ``;
 let gifQuote = ``;
 let gifData;
+// let numbersData;
+// let numbersToMessage = [];
 async function returnedGifs() {
-    // here's the gif!
+    // Here are the recipients!
+    // numbersData = await getNumbers();
+    // for (i=0; i<numbersData.length; i++) {
+    //     numbersToMessage.push(numbersData[i].sign_up_phone);
+    // };
+    // Here's the gif!
     gifData = await getGif();
     gifID = gifData[0].gif_id;
     gifPath = gifData[0].gif_path;
@@ -84,19 +111,25 @@ async function returnedGifs() {
     // await updateGifDate(gifID)
 };
 
+let curDate = new Date();
+//Convert timestamp in GMT/UTC format
+var utcDate = curDate.toUTCString();
+console.log(utcDate);
+
 // set Twilio SID and Token
 const accountSid = process.env.VAR_TWILIO_SID;
 const authToken = process.env.VAR_TWILIO_AUTH;
 const client = require('twilio')(accountSid, authToken);
 
-// let numbersToMessage = [+15126737109, +13474535584, +15127721379, +15202507540, +16126444087, +15129632405, +15125681055, +15125077431, +15126380872];
-let numbersToMessage = [+15126737109]
+// let numbersToMessage = [+15126737109]
 
-let j = schedule.scheduleJob('22 8 * * *', async function(){
+let j = schedule.scheduleJob('36 22 * * *', async function(){
     await returnedGifs();
+    numbersToMessage = await getNumbers();
+    // console.log(`numbers: ${numbersToMessage}`);
     numbersToMessage.forEach(function(number){
         var message = client.messages.create({
-            body: gifQuote,
+            body: `"${gifQuote}"\n\nThanks for being a beta tester for toddsmells.com!`,
             from: process.env.VAR_FROM,
             mediaUrl: `http://148.72.42.20:8080/gifs/${ gifPath }`,
             to: number
@@ -106,6 +139,7 @@ let j = schedule.scheduleJob('22 8 * * *', async function(){
         .done();
     });
     updateGifDate(gifID)
+    console.log(`numbers: ${numbersToMessage}`);
     console.log(`gifID: ${gifID}`);
     console.log(`gifPath: ${gifPath}`);
     console.log(`gifDate: ${gifDate}`);
@@ -135,6 +169,7 @@ let j = schedule.scheduleJob('22 8 * * *', async function(){
 app.use(index);
 app.use(route_signup);
 app.use(route_gif_admin);
+app.use(route_dump);
 
 // set redirect for users adding a /
 app.get('/', function(req, res){ res.redirect('index')});

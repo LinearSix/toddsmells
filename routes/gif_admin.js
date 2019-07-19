@@ -15,7 +15,7 @@ router.get('/gif_admin', (req, res, next) => {
       });
 });
 
-let gif_insert_id
+let gif_insert_id;
 router.post('/gif_admin/upload', function(req, res) {
 
     knex('gifs')
