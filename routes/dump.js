@@ -18,7 +18,7 @@ const knex = require('../db/knex');
 
 router.get('/dump', (req, res, next) => {
     knex('gifs')
-    .orderBy('gif_date', 'desc')
+    .orderBy('gif_id', 'desc')
     .then((gifs) => {
         return knex('sign_up')
         .orderBy('sign_up_id')

@@ -10,8 +10,12 @@
 <body>
     <div class="div_main_container">
         <% for (i=0; i<gifs.length; i++) { %>
-        <!-- <img width="120" height="80" src="/gifs/<%= gifs[i].gif_path %>" /> -->
-        <br /><%= gifs[i].gif_name %>
+            <% if (!gifs[i].gif_date) { %>
+            <img width="60" height="40" src="/gifs/<%= gifs[i].gif_path %>" />
+            <% } else { %>
+            <img width="60" height="40" style="filter: grayscale(100%);" src="/gifs/<%= gifs[i].gif_path %>" />
+            <% } %>
+        <!-- <br /><%= gifs[i].gif_name %> -->
         <!-- <br /><%= gifs[i].gif_quote %> -->
         <!-- <br /><%= gifs[i].gif_desc %> -->
         <% } %>
@@ -29,7 +33,7 @@
             <img class="img_gif_banner" src="/small_gifs/homer_buttons.gif" />
             <img class="img_gif_banner" src="/small_gifs/homer_risky_biz.gif" />
         </div>
-        <div class="div_red_banner">TODDSMELLS.com</div>
+        <!-- <div class="div_red_banner">TODDSMELLS.com</div> -->
         <div class="div_upload_container">
             <form action="/gif_admin/upload" method="POST" enctype="multipart/form-data">
                 <input type="file" id="gifUpload" name="gifUpload" required />
