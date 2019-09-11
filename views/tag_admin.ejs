@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/index.css" charset="utf-8">
+    <link rel="stylesheet" href="/auto-complete.css" charset="utf-8">
+    <title>Todd Smells!</title>
+</head>
+<body>
+    <div class="div_main_container">
+        <a href="/tag_admin" style="color: #ffffff; text-decoration: none;">&laquo;&nbsp;Return to Tag Admin</a></br>&nbsp;<br />
+        <% if (tags === ``) { %>
+            <% for (i=0; i<gifs.length; i++) { %>
+                <% if (!gifs[i].gif_date) { %>
+                    <a href="/tag_admin/<%= gifs[i].gif_id %>"><img width="60" height="40" src="/gifs/<%= gifs[i].gif_path %>" /></a>
+                    <br /><%= gifs[i].gif_name %>
+                <% } else { %>
+                    <a href="/tag_admin/<%= gifs[i].gif_id %>"><img width="60" height="40" style="filter: grayscale(100%);" src="/gifs/<%= gifs[i].gif_path %>" /></a>
+                    <br /><%= gifs[i].gif_name %>
+                <% } %>
+            <% } %>
+        <% } else { %>
+            <% if (!gifs[0].gif_date) { %>
+                <a href="/tag_admin/<%= gifs[0].gif_id %>"><img width="120" height="80" src="/gifs/<%= gifs[0].gif_path %>" /></a>
+                <br /><%= gifs[0].gif_name %>
+                <% for (i=0; i<tags.length; i++) { %>
+                    <br /><%= tags[i].tag_name %>
+                <% } %>
+            <% } else { %>
+                <a href="/tag_admin/<%= gifs[0].gif_id %>"><img width="120" height="80" style="filter: grayscale(100%);" src="/gifs/<%= gifs[0].gif_path %>" /></a>
+                <br /><%= gifs[0].gif_name %>
+                <% for (i=0; i<id_tags.length; i++) { %>
+                    <form method="POST" action="/tag_admin_delete">
+                    <input type="hidden" name="gif_tags_gif" value="<%= gifs[0].gif_id %>" />
+                    <input type="hidden" name="gif_tags_tag" value="<%= id_tags[i].tag_id %>" />
+                    <br /><%= id_tags[i].tag_name %>&nbsp;<input type="submit" value="Remove">
+                    </form>
+                <% } %>
+            <% } %>
+            <!-- <form method="POST" action="/tag_admin_add">
+                <input type="hidden" name="gif_id" value="<%= gifs[0].gif_id %>" />
+                <input name="tag_name" type="text" size="30" />
+                &nbsp;<input type="submit" value="Add tag">
+            </form> -->
+            <!-- <form method="POST" action="/tag_admin_add" onsubmit="return false;"> -->
+            <form method="POST" action="/tag_admin_add">
+                <input type="hidden" name="gif_id" value="<%= gifs[0].gif_id %>" />
+                <br />New Tag&nbsp;<input id="hero-demo" autofocus type="text" name="tag_name" placeholder="type a new tag" size="30">&nbsp;<input type="submit" value="Add tag">
+            </form>
+        <% } %>
+        <!-- <div class="div_upload_container">
+            <form action="/gif_admin/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" id="gifUpload" name="gifUpload" required />
+                <br />Gif Name&nbsp;<input size="80" type="text" id="gif_name" name="gif_name" />
+                <br />Gif Quote&nbsp;<input size="80" type="text" id="gif_quote" name="gif_quote" />
+                <br />Gif Description&nbsp;<input size="80" type="text" id="gif_desc" name="gif_desc" />
+                <br /><button type="submit">Upload</button>
+            </form>
+        </div> -->
+    </div>
+    <script type="text/javascript" src="/auto-complete.js"></script>
+    <script>
+        var demo1 = new autoComplete({
+            selector: '#hero-demo',
+            minChars: 1,
+            source: function(term, suggest){
+                term = term.toLowerCase();
+                var choices = [<% for(let i=0;i<tags.length;i++){%>'<%= tags[i].tag_name %>', <% } %>]
+                // var choices = ['ActionScript', 'AppleScript', 'Asp', 'Assembly', 'BASIC', 'Batch', 'C', 'C++', 'CSS', 'Clojure', 'COBOL', 'ColdFusion', 'Erlang', 'Fortran', 'Groovy', 'Haskell', 'HTML', 'Java', 'JavaScript', 'Lisp', 'Perl', 'PHP', 'PowerShell', 'Python', 'Ruby', 'Scala', 'Scheme', 'SQL', 'TeX', 'XML',];
+                var suggestions = [];
+                for (i=0;i<choices.length;i++)
+                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                suggest(suggestions);
+            }
+        });
+
+        if (~window.location.href.indexOf('http')) {
+            (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=114593902037957";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+            document.getElementById('github_social').innerHTML = '\
+                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=JavaScript-autoComplete&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
+                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=JavaScript-autoComplete&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
+            ';
+        }
+    </script>
+</body>
+</html>

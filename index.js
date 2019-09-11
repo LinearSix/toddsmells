@@ -31,6 +31,7 @@ app.set('view engine', 'ejs');
 const index = require('./routes');
 const route_signup = require('./routes/signup');
 const route_gif_admin = require('./routes/gif_admin');
+const route_tag_admin = require('./routes/tag_admin');
 const route_dump = require('./routes/dump');
 
 // send gif to the sendMMS function
@@ -45,6 +46,19 @@ function getGif() {
             gifArr.push(value)
         });
         return gifArr;
+    });
+};
+
+// get unused gif number for admin statistics
+function getNullGif() {
+    let gifNullCount = -1;
+    return knex('gifs')
+    .whereNull('gif_date')
+    .then(function(gifs) {
+        gifs.forEach(function(value) {
+            gifNullCount = gifNullCount + 1
+        });
+        return gifNullCount;
     });
 };
 
@@ -64,6 +78,23 @@ function getNumbers() {
         };
         numbersSet = new Set(numbers)
         return numbersSet;
+    });
+};
+
+function getAdminNumbers() {
+    let adminNumbers = [];
+    let adminNumArr = [];
+    return knex('sign_up')
+    .where('sign_up_id', 1)
+    .then(function(sign_up) {
+        sign_up.forEach(function(value) {
+            adminNumArr.push(value)
+        });
+        for (i=0; i<adminNumArr.length; i++) {
+            adminNumbers.push(adminNumArr[i].sign_up_phone);
+        };
+        adminNumbersSet = new Set(adminNumbers)
+        return adminNumbersSet;
     });
 };
 
@@ -127,23 +158,44 @@ const client = require('twilio')(accountSid, authToken);
 
 // let numbersToMessage = [+15126737109, +13474535584, +15127721379, +15202507540, +16126444087, +15129632405, +15125681055, +15125077431, +15126380872, +12242444805, +19175362286];
 let numbersToMessage;
+let adminNumbers;
 let gifData;
+let gifNullCount;
 let gifID = ``;
 let gifPath = ``;
 let gifDate = ``;
 let gifQuote = ``;
 
-let j = schedule.scheduleJob('0 19 9 * * *', async function(){
+let j = schedule.scheduleJob('0 17 16 * * *', async function(){
     gifData = await getGif();
+    gifNullCount = await getNullGif();
     gifID = gifData[0].gif_id;
     gifPath = gifData[0].gif_path;
     gifDate = gifData[0].gif_date;
     gifQuote = gifData[0].gif_quote;
     numbersToMessage = await getNumbers();
+    adminNumbers = await getAdminNumbers();
+
+    // send the admin some useful statistics
+    adminNumbers.forEach(function(adminNumber){
+    var message = client.messages.create({
+        body: `${gifNullCount} null GIFs remain in the DB\n\nhttp://148.72.42.20:8080/gifs/${ gifPath }`,
+        from: process.env.VAR_FROM,
+        to: adminNumber
+        })
+        .then(message =>  console.log(message.status))
+        .done();
+    });
+
+    if (gifQuote) {
+        messageBody = `"${gifQuote}"\n\nThanks for being a beta tester for toddsmells.com!`
+    } else {
+        messageBody = `Thanks for being a beta tester for toddsmells.com!`
+    }
     
     numbersToMessage.forEach(function(number){
         var message = client.messages.create({
-            body: `"${gifQuote}"\n\nThanks for being a beta tester for toddsmells.com!`,
+            body: messageBody,
             from: process.env.VAR_FROM,
             mediaUrl: `http://148.72.42.20:8080/gifs/${ gifPath }`,
             to: number
@@ -183,6 +235,7 @@ let j = schedule.scheduleJob('0 19 9 * * *', async function(){
 app.use(index);
 app.use(route_signup);
 app.use(route_gif_admin);
+app.use(route_tag_admin);
 app.use(route_dump);
 
 // set redirect for users adding a /

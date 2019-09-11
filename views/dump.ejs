@@ -24,6 +24,14 @@
     <p>&nbsp;</p>
     <p>&nbsp;</p>
     <p>&nbsp;</p>
+    <% for (i=0; i<tags.length; i++) { %>
+        &#123;<br />
+            &quot;tag_name&quot;&#58; `<%= tags[i].tag_name %>`&#44;<br />
+        &#125;&#44;<br />
+    <% } %>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
     <% for (i=0; i<sign_up.length; i++) { %>
         &#123;<br />
             <% if (sign_up[i].sign_up_date) { %>
@@ -31,6 +39,7 @@
             <% } else { %>
                 &quot;sign_up_date&quot;&#58; null&#44;<br />
             <% } %>
+            &quot;sign_up_id&quot;&#58; `<%= sign_up[i].sign_up_id %>`&#44;<br />
             &quot;sign_up_fname&quot;&#58; `<%= sign_up[i].sign_up_fname %>`&#44;<br />
             &quot;sign_up_lname&quot;&#58; `<%= sign_up[i].sign_up_lname %>`&#44;<br />
             &quot;sign_up_username&quot;&#58; `<%= sign_up[i].sign_up_username %>`&#44;<br />

@@ -10,14 +10,14 @@ exports.seed = (knex) => {
             "gif_desc": `Kearney, Dolph, and Jimbo sarcastically feign terror.`
             },
             {
-            "gif_date": null,
+            "gif_date": `2019-7-16`,
             "gif_name": `Barney Mouse Rat Syringe`,
             "gif_path": `barney_mouse_rat_syringe.gif`,
             "gif_quote": `Fine-Mouse-Fine-Rat-Syringe-Fine.`,
             "gif_desc": `Barney thanks a bottling line worker for his efforts.`
             },
             {
-            "gif_date": null,
+            "gif_date": `2019-7-16`,
             "gif_name": `Wiggum Breathes`,
             "gif_path": `wiggum_breathe.gif`,
             "gif_quote": `Listen to me breathe! Waahh! >Snort!< Waahh!`,

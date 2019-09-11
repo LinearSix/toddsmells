@@ -11,15 +11,15 @@
     <div class="div_main_container">
         <% for (i=0; i<gifs.length; i++) { %>
             <% if (!gifs[i].gif_date) { %>
-            <img width="60" height="40" src="/gifs/<%= gifs[i].gif_path %>" />
+            <a href="tag_admin/<%= gifs[i].gif_id %>"><img width="60" height="40" src="/gifs/<%= gifs[i].gif_path %>" /></a>
             <% } else { %>
-            <img width="60" height="40" style="filter: grayscale(100%);" src="/gifs/<%= gifs[i].gif_path %>" />
+            <a href="tag_admin/<%= gifs[i].gif_id %>"><img width="60" height="40" style="filter: grayscale(100%);" src="/gifs/<%= gifs[i].gif_path %>" /></a>
             <% } %>
         <!-- <br /><%= gifs[i].gif_name %> -->
         <!-- <br /><%= gifs[i].gif_quote %> -->
         <!-- <br /><%= gifs[i].gif_desc %> -->
         <% } %>
-        <div class="div_gif_banner">
+        <!-- <div class="div_gif_banner">
             <img class="img_gif_banner" src="/small_gifs/apu_rhyme_with_me.gif" />
             <img class="img_gif_banner" src="/small_gifs/bart_dr_butts.gif" />
             <img class="img_gif_banner" src="/small_gifs/bart_jessica_loiter.gif" />
@@ -32,7 +32,7 @@
             <img class="img_gif_banner" src="/small_gifs/grandpa_waterskis.gif" />
             <img class="img_gif_banner" src="/small_gifs/homer_buttons.gif" />
             <img class="img_gif_banner" src="/small_gifs/homer_risky_biz.gif" />
-        </div>
+        </div> -->
         <!-- <div class="div_red_banner">TODDSMELLS.com</div> -->
         <div class="div_upload_container">
             <form action="/gif_admin/upload" method="POST" enctype="multipart/form-data">
