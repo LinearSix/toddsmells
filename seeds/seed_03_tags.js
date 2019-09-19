@@ -3,7 +3,7 @@ exports.seed = (knex) => {
       .then(() => {
           return knex('tags ').insert([
             {
-              "tag_name": `apu`,
+              "tag_name": `Apu`,
             }
           ]);
     });

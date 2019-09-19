@@ -25,8 +25,12 @@
             <% if (!gifs[0].gif_date) { %>
                 <a href="/tag_admin/<%= gifs[0].gif_id %>"><img width="120" height="80" src="/gifs/<%= gifs[0].gif_path %>" /></a>
                 <br /><%= gifs[0].gif_name %>
-                <% for (i=0; i<tags.length; i++) { %>
-                    <br /><%= tags[i].tag_name %>
+                <% for (i=0; i<id_tags.length; i++) { %>
+                    <form method="POST" action="/tag_admin_delete">
+                    <input type="hidden" name="gif_tags_gif" value="<%= gifs[0].gif_id %>" />
+                    <input type="hidden" name="gif_tags_tag" value="<%= id_tags[i].tag_id %>" />
+                    <br /><%= id_tags[i].tag_name %>&nbsp;<input type="submit" value="Remove">
+                    </form>
                 <% } %>
             <% } else { %>
                 <a href="/tag_admin/<%= gifs[0].gif_id %>"><img width="120" height="80" style="filter: grayscale(100%);" src="/gifs/<%= gifs[0].gif_path %>" /></a>

@@ -30,6 +30,7 @@ app.set('view engine', 'ejs');
 // set express routes
 const index = require('./routes');
 const route_signup = require('./routes/signup');
+const route_search = require('./routes/search');
 const route_gif_admin = require('./routes/gif_admin');
 const route_tag_admin = require('./routes/tag_admin');
 const route_dump = require('./routes/dump');
@@ -234,6 +235,7 @@ let j = schedule.scheduleJob('0 17 16 * * *', async function(){
 // use express routes
 app.use(index);
 app.use(route_signup);
+app.use(route_search);
 app.use(route_gif_admin);
 app.use(route_tag_admin);
 app.use(route_dump);
